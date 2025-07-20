@@ -42,6 +42,7 @@
     <button onclick="showAnswer()">▶ 答えを見る</button>
     <button onclick="prevCard()">◀ 前へ</button>
     <button onclick="nextCard()">次へ ▶</button>
+    <button onclick="goToStart()">⏮ 最初に戻る</button>
   </div>
 
   <script>
@@ -85,6 +86,10 @@
         });
     }
 
+    function goToStart() {
+  current = 0;
+  showCard();
+}
     document.getElementById("themeSelector").addEventListener("change", function () {
       loadCards(this.value);
     });

@@ -1,64 +1,63 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>中国語会話トレーニング</title>
   <style>
     body { font-family: sans-serif; padding: 20px; background: #f2f2f2; }
-    .card { background: white; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .card p { font-size: 18px; margin: 10px 0; }
-    button { margin: 5px; padding: 10px 15px; font-size: 16px; }
+    .card { background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .card p { font-size: 18px; }
+    button { margin: 10px; padding: 10px 15px; font-size: 16px; }
   </style>
 </head>
 <body>
   <div class="card">
-    <p id="jp">日本語文</p>
-    <p id="cn" style="display:none;"></p>
-    <button onclick="showAnswer()">答えを見る</button>
-    <button onclick="prevCard()">前へ</button>
-    <button onclick="nextCard()">次へ</button>
+    <p id="jp">日本語</p>
+    <p id="zh" style="display:none;">中文</p>
+    <p id="py" style="display:none;">拼音</p>
+    <button onclick="showAnswer()">▶ 答えを見る</button>
+    <button onclick="prevCard()">◀ 前へ</button>
+    <button onclick="nextCard()">次へ ▶</button>
   </div>
 
   <script>
-    const cards = [
-      {
-        jp: "そして今週月曜日に珠海空港から浦東空港に移動しました。",
-        cn: "星期一我从珠海机场回到了浦东机场。<br>Xīngqī yī wǒ cóng Zhūhǎi jīchǎng huí dào le Pǔdōng jīchǎng."
-      },
-      {
-        jp: "この日から、日本の私の上司にあたる方が上海に来られるためです。",
-        cn: "因为从这一天开始，我在日本的上司要来上海。<br>Yīnwèi cóng zhè yì tiān kāishǐ, wǒ zài Rìběn de shàngsi yào lái Shànghǎi."
-      },
-      {
-        jp: "私たちは中国のスタッフと２日間面談をしました。",
-        cn: "我们和中国的员工面谈了两天。<br>Wǒmen hé Zhōngguó de yuángōng miàntán le liǎng tiān."
-      }
-    ];
+    let cards = [];
     let current = 0;
 
     function showCard() {
-      document.getElementById("jp").textContent = cards[current].jp;
-      document.getElementById("cn").style.display = "none";
-      document.getElementById("cn").innerHTML = cards[current].cn;
+      document.getElementById("jp").textContent = cards[current].ja;
+      document.getElementById("zh").style.display = "none";
+      document.getElementById("py").style.display = "none";
+      document.getElementById("zh").textContent = cards[current].zh;
+      document.getElementById("py").textContent = cards[current].pinyin;
     }
 
     function showAnswer() {
-      document.getElementById("cn").style.display = "block";
+      document.getElementById("zh").style.display = "block";
+      document.getElementById("py").style.display = "block";
     }
 
     function prevCard() {
-      if (current > 0) current--;
-      showCard();
+      if (current > 0) {
+        current--;
+        showCard();
+      }
     }
 
     function nextCard() {
-      if (current < cards.length - 1) current++;
-      showCard();
+      if (current < cards.length - 1) {
+        current++;
+        showCard();
+      }
     }
 
-    showCard();
+    fetch("data/cards_tooth.json")
+      .then(res => res.json())
+      .then(data => {
+        cards = data;
+        showCard();
+      });
   </script>
 </body>
 </html>
